@@ -1,0 +1,16 @@
+{
+  "emulators": {
+    "anyps5": {
+      "sha": "fe540db950a61dfb5f5ddfc3c940a7c4738783b6",
+      "path": "C:\\Progetti\\PS5-NID-DB\\repos\\AnyPS5"
+    },
+    "kyty": {
+      "sha": "a0b083c85293d55a48b4f8774285415c29d78c8b",
+      "path": "C:\\Progetti\\PS5-NID-DB\\repos\\KytyPS5"
+    },
+    "sharpemu": {
+      "sha": "96a4c7de613c55187af98492eafcdb14d454e725",
+      "path": "C:\\Progetti\\PS5-NID-DB\\repos\\SharpEmu"
+    }
+  }
+}

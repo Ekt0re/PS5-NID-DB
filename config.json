@@ -1,0 +1,29 @@
+{
+  "emulators": {
+    "anyps5": {
+      "url": "https://github.com/boykopovar/AnyPS5.git",
+      "github": "boykopovar/AnyPS5",
+      "branch": "main",
+      "dir": "AnyPS5",
+      "fallback_dirs": ["AnyPS5-main"],
+      "scan": "core/libs/prx"
+    },
+    "kyty": {
+      "url": "https://github.com/KytyPS5/KytyPS5.git",
+      "github": "KytyPS5/KytyPS5",
+      "branch": "main",
+      "dir": "KytyPS5",
+      "fallback_dirs": ["KytyPS5-main"],
+      "scan": "src/libs",
+      "resolve": "src"
+    },
+    "sharpemu": {
+      "url": "https://github.com/sharpemu/sharpemu.git",
+      "github": "sharpemu/sharpemu",
+      "branch": "main",
+      "dir": "SharpEmu",
+      "fallback_dirs": ["sharpemu-main"],
+      "scan": "src/SharpEmu.Libs"
+    }
+  }
+}

@@ -1,0 +1,34 @@
+[
+  {
+    "date": "2026-11-23",
+    "generated_at": "2026-11-23T10:47:29Z",
+    "sha": {
+      "anyps5": "fe540db950a61dfb5f5ddfc3c940a7c4738783b6",
+      "kyty": "a0b083c85293d55a48b4f8774285415c29d78c8b",
+      "sharpemu": "96a4c7de613c55187af98492eafcdb14d454e725"
+    },
+    "counts": {
+      "anyps5": {
+        "implemented": 15493,
+        "stub": 19449,
+        "unknown": 4138,
+        "not_implemented": 24,
+        "total": 39080
+      },
+      "kyty": {
+        "implemented": 1788,
+        "stub": 24,
+        "unknown": 0,
+        "not_implemented": 37292,
+        "total": 1812
+      },
+      "sharpemu": {
+        "implemented": 1452,
+        "stub": 40,
+        "unknown": 72,
+        "not_implemented": 37540,
+        "total": 1564
+      }
+    }
+  }
+]
