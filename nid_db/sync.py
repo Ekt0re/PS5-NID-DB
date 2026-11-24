@@ -1,8 +1,9 @@
+from concurrent.futures import ThreadPoolExecutor, as_completed
 import json
 import subprocess
 from pathlib import Path
 
-from nid_db.paths import DATA, REPOS, STATE_PATH, emulator_dir, load_config
+from nid_db.paths import DATA, REPOS, STATE_PATH, atomic_write_text, emulator_dir, load_config, print_progress
 
 
 def run_git(args: list[str], cwd: Path | None = None) -> subprocess.CompletedProcess:
@@ -39,7 +40,7 @@ def load_state() -> dict:
 
 def save_state(state: dict) -> None:
     DATA.mkdir(parents=True, exist_ok=True)
-    STATE_PATH.write_text(json.dumps(state, indent=2) + "\n", encoding="utf-8")
+    atomic_write_text(STATE_PATH, json.dumps(state, indent=2) + "\n")
 
 
 def sync_emulator(name: str, cfg: dict, state: dict) -> dict:
@@ -100,8 +101,30 @@ def collect_shas() -> dict[str, str | None]:
 def sync_all() -> dict:
     config = load_config()
     state = load_state()
+    emulators = config["emulators"]
+    total = len(emulators)
     reports = {}
-    for name, cfg in config["emulators"].items():
-        reports[name] = sync_emulator(name, cfg, state)
+    if total == 0:
+        save_state(state)
+        return reports
+
+    print_progress("sync", 0, total)
+    done = 0
+    with ThreadPoolExecutor(max_workers=total) as pool:
+        futures = {
+            pool.submit(sync_emulator, name, cfg, {}): name
+            for name, cfg in emulators.items()
+        }
+        for future in as_completed(futures):
+            name = futures[future]
+            info = future.result()
+            reports[name] = info
+            state.setdefault("emulators", {})[name] = {
+                "sha": info.get("sha"),
+                "path": info.get("dir"),
+            }
+            done += 1
+            print_progress("sync", done, total)
+
     save_state(state)
     return reports

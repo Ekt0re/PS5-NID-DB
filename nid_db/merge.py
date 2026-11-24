@@ -4,7 +4,7 @@ import json
 
 from nid_db import EMULATORS
 from nid_db.nid import compute_nid
-from nid_db.paths import DATA, HISTORY_PATH, NIDS_PATH
+from nid_db.paths import DATA, HISTORY_PATH, NIDS_PATH, atomic_write_text
 
 
 def _score_name(nid: str, name: str) -> tuple:
@@ -113,10 +113,10 @@ def update_history(merged: list[dict], shas: dict[str, str | None], path=None) -
     history.append(point)
     history.sort(key=lambda item: item["date"])
     DATA.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(history, indent=2) + "\n", encoding="utf-8")
+    atomic_write_text(path, json.dumps(history, indent=2) + "\n")
     return history
 
 
 def save_nids(merged: list[dict]) -> None:
     DATA.mkdir(parents=True, exist_ok=True)
-    NIDS_PATH.write_text(json.dumps(merged) + "\n", encoding="utf-8")
+    atomic_write_text(NIDS_PATH, json.dumps(merged) + "\n")

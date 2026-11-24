@@ -1,12 +1,13 @@
 """PS5 NID database pipeline: sync | scan | merge | site | all."""
 
 import argparse
+from concurrent.futures import ThreadPoolExecutor, as_completed
 import json
 import sys
 
 from nid_db import EMULATORS
 from nid_db.merge import merge_records, save_nids, update_history
-from nid_db.paths import DATA, SITE, load_config, emulator_dir
+from nid_db.paths import DATA, SITE, atomic_write_text, emulator_dir, load_config, print_progress
 from nid_db.scanners import SCANNERS
 from nid_db.site import generate_site
 from nid_db.sync import collect_shas, head_sha, load_state, sync_all
@@ -14,31 +15,48 @@ from nid_db.sync import collect_shas, head_sha, load_state, sync_all
 SCANS_DIR = DATA / "scans"
 
 
+def _scan_one(name: str, cfg: dict, state: dict, write: bool) -> tuple[str, list[dict], str | None, str | None]:
+    cfg = dict(cfg)
+    cfg["_name"] = name
+    repo = emulator_dir(cfg)
+    if not (repo / cfg["scan"]).is_dir():
+        return name, [], None, f"[{name}] scan dir missing: {repo / cfg['scan']}"
+    sha = head_sha(repo)
+    if sha is None and (repo / ".git").exists():
+        sha = state.get("emulators", {}).get(name, {}).get("sha")
+    scanner = SCANNERS[name]
+    kwargs = {k: v for k, v in cfg.items() if k not in {"url", "github", "dir", "fallback_dirs", "_name"}}
+    records = scanner(repo, github=cfg["github"], sha=sha, **kwargs)
+    if write:
+        atomic_write_text(SCANS_DIR / f"{name}.json", json.dumps(records) + "\n")
+    return name, records, sha, None
+
+
 def run_scan(write: bool = True) -> dict[str, list[dict]]:
     config = load_config()
     state = load_state()
+    emulators = config["emulators"]
+    total = len(emulators)
     results = {}
-    for name, cfg in config["emulators"].items():
-        cfg = dict(cfg)
-        cfg["_name"] = name
-        repo = emulator_dir(cfg)
-        if not (repo / cfg["scan"]).is_dir():
-            print(f"[{name}] scan dir missing: {repo / cfg['scan']}", file=sys.stderr)
-            results[name] = []
-            continue
-        sha = head_sha(repo)
-        if sha is None and (repo / ".git").exists():
-            sha = state.get("emulators", {}).get(name, {}).get("sha")
-        scanner = SCANNERS[name]
-        kwargs = {k: v for k, v in cfg.items() if k not in {"url", "github", "dir", "fallback_dirs", "_name"}}
-        records = scanner(repo, github=cfg["github"], sha=sha, **kwargs)
-        results[name] = records
-        print(f"[{name}] {len(records)} records @ {sha or 'unknown-sha'}")
-        if write:
-            SCANS_DIR.mkdir(parents=True, exist_ok=True)
-            (SCANS_DIR / f"{name}.json").write_text(
-                json.dumps(records) + "\n", encoding="utf-8"
-            )
+    if total == 0:
+        return results
+
+    print_progress("scan", 0, total)
+    done = 0
+    with ThreadPoolExecutor(max_workers=total) as pool:
+        futures = {
+            pool.submit(_scan_one, name, cfg, state, write): name
+            for name, cfg in emulators.items()
+        }
+        for future in as_completed(futures):
+            name, records, sha, err = future.result()
+            results[name] = records
+            done += 1
+            print_progress("scan", done, total)
+            if err:
+                print(err, file=sys.stderr)
+            else:
+                print(f"[{name}] {len(records)} records @ {sha or 'unknown-sha'}")
     return results
 
 
@@ -48,7 +66,6 @@ def load_scans() -> dict[str, list[dict]]:
         path = SCANS_DIR / f"{name}.json"
         scans[name] = json.loads(path.read_text(encoding="utf-8")) if path.is_file() else []
     return scans
-
 
 def run_merge(scans: dict[str, list[dict]] | None = None) -> list[dict]:
     scans = scans if scans is not None else load_scans()

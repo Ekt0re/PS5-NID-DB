@@ -1,9 +1,11 @@
+from concurrent.futures import ThreadPoolExecutor, as_completed
 import json
+import os
 import shutil
 from pathlib import Path
 
 from nid_db import EMULATORS
-from nid_db.paths import HISTORY_PATH, SITE
+from nid_db.paths import HISTORY_PATH, SITE, atomic_write_text, print_progress
 
 STATUS_LABEL = {
     "implemented": "implemented",
@@ -40,21 +42,46 @@ def api_payload(item: dict) -> dict:
 
 
 def _write_json(path: Path, payload) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+    atomic_write_text(path, json.dumps(payload, indent=2) + "\n")
 
 
 def write_api(merged: list[dict], site_dir: Path | None = None) -> None:
     site_dir = site_dir or SITE
     api_dir = site_dir / "api"
-    if api_dir.exists():
-        shutil.rmtree(api_dir)
+    api_dir.mkdir(parents=True, exist_ok=True)
+
     index = {}
+    items = []
+    expected_lower = {"index.json"}
     for item in merged:
         payload = api_payload(item)
-        _write_json(api_dir / f"{item['nid']}.json", payload)
         index[item["nid"]] = payload["name"]
+        filename = f"{item['nid']}.json"
+        expected_lower.add(filename.lower())
+        items.append((api_dir / filename, payload))
+
+    total = len(items)
+    if total > 0:
+        print_progress("api", 0, total)
+        max_workers = min(32, (os.cpu_count() or 4) * 4)
+        step = max(1, total // 100)
+        done = 0
+        with ThreadPoolExecutor(max_workers=max_workers) as pool:
+            futures = [pool.submit(_write_json, path, payload) for path, payload in items]
+            for future in as_completed(futures):
+                future.result()
+                done += 1
+                if done % step == 0 or done == total:
+                    print_progress("api", done, total)
+
     _write_json(api_dir / "index.json", index)
+
+    for existing in api_dir.iterdir():
+        if existing.is_file() and existing.name.lower() not in expected_lower:
+            try:
+                existing.unlink()
+            except OSError:
+                pass
 
 
 def write_nids_json(merged: list[dict], site_dir: Path | None = None) -> None:
@@ -243,4 +270,3 @@ def generate_site(merged: list[dict]) -> None:
     write_nids_json(merged)
     write_history()
     write_api(merged)
-    write_index_html()
