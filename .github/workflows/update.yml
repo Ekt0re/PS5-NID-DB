@@ -4,6 +4,10 @@ on:
   schedule:
     - cron: "23 */12 * * *"
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "site/**"
 
 permissions:
   contents: write
@@ -17,6 +21,9 @@ concurrency:
 jobs:
   update:
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
 
@@ -48,4 +55,6 @@ jobs:
         with:
           path: site
 
-      - uses: actions/deploy-pages@v4
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

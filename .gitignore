@@ -143,8 +143,12 @@ venv.bak/
 # Rope project settings
 .ropeproject
 
-# mkdocs documentation
-/site
+# Generated static site data (keep frontend assets tracked)
+/site/api/
+/site/nids.json
+/site/history.json
+
+/data
 
 # mypy
 .mypy_cache/
