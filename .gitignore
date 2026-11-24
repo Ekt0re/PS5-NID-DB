@@ -148,8 +148,6 @@ venv.bak/
 /site/nids.json
 /site/history.json
 
-data/
-
 
 # mypy
 .mypy_cache/
@@ -187,4 +185,3 @@ cython_debug/
 
 # Cloned emulator repos (large, re-clonable)
 repos/
-/data
