@@ -148,7 +148,8 @@ venv.bak/
 /site/nids.json
 /site/history.json
 
-/data
+data/
+
 
 # mypy
 .mypy_cache/
