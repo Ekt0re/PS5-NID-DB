@@ -1,16 +1,16 @@
 {
   "emulators": {
     "anyps5": {
-      "sha": "0d8e695ad293f719be141fd14d2f8a8c62cd3e1b",
-      "path": "C:\\Progetti\\PS5-NID-DB\\repos\\AnyPS5"
+      "sha": "c161b55334677eff982a195b3fb8f1aea1f8bdf2",
+      "path": "/home/runner/work/PS5-NID-DB/PS5-NID-DB/repos/AnyPS5"
     },
     "kyty": {
-      "sha": "578f2d43fe5d018617afaad94b1c90a07f6d9acc",
-      "path": "C:\\Progetti\\PS5-NID-DB\\repos\\KytyPS5"
+      "sha": "4e90654506c8078649e2c1d22c763164406497da",
+      "path": "/home/runner/work/PS5-NID-DB/PS5-NID-DB/repos/KytyPS5"
     },
     "sharpemu": {
-      "sha": "96fa5d10dc504a09619b26f1cc51d4b71621532e",
-      "path": "C:\\Progetti\\PS5-NID-DB\\repos\\SharpEmu"
+      "sha": "86aec8128f7c3403172c6ab8cb801c51678ae114",
+      "path": "/home/runner/work/PS5-NID-DB/PS5-NID-DB/repos/SharpEmu"
     }
   }
 }
