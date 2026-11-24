@@ -33,32 +33,32 @@
   },
   {
     "date": "2026-11-24",
-    "generated_at": "2026-11-24T10:07:38Z",
+    "generated_at": "2026-11-24T21:20:05Z",
     "sha": {
-      "anyps5": "1f2e77165a4ae5f67a6b89eb149a7a97e57476b2",
-      "kyty": "4e90654506c8078649e2c1d22c763164406497da",
-      "sharpemu": "86aec8128f7c3403172c6ab8cb801c51678ae114"
+      "anyps5": "bd3a694f2b55a7ae319455cfa7238b7df51d444d",
+      "kyty": "30781dcda029cbd669aa81337ac2902c9c3015d8",
+      "sharpemu": "482b013dd58702d00d9bc614c7a69baf9766d861"
     },
     "counts": {
       "anyps5": {
-        "implemented": 15650,
-        "stub": 19321,
-        "unknown": 4126,
-        "not_implemented": 24,
-        "total": 39097
+        "implemented": 15797,
+        "stub": 19220,
+        "unknown": 4149,
+        "not_implemented": 25,
+        "total": 39166
       },
       "kyty": {
-        "implemented": 1789,
+        "implemented": 1795,
         "stub": 25,
         "unknown": 0,
-        "not_implemented": 37307,
-        "total": 1814
+        "not_implemented": 37371,
+        "total": 1820
       },
       "sharpemu": {
         "implemented": 1452,
         "stub": 40,
         "unknown": 72,
-        "not_implemented": 37557,
+        "not_implemented": 37627,
         "total": 1564
       }
     }
