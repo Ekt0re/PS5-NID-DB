@@ -65,7 +65,7 @@
   },
   {
     "date": "2026-11-25",
-    "generated_at": "2026-11-25T15:56:27Z",
+    "generated_at": "2026-11-25T16:01:14Z",
     "sha": {
       "anyps5": "6b59b8f5e76c8c0a431df66e981097998b3754e3",
       "kyty": "93cce66564bdced2fc7054ca9794451dfeef4d9d",
@@ -73,15 +73,15 @@
     },
     "counts": {
       "anyps5": {
-        "implemented": 15890,
-        "stub": 19163,
-        "unknown": 4150,
+        "implemented": 15896,
+        "stub": 19158,
+        "unknown": 4149,
         "not_implemented": 27,
         "total": 39203
       },
       "kyty": {
-        "implemented": 1797,
-        "stub": 24,
+        "implemented": 1796,
+        "stub": 25,
         "unknown": 0,
         "not_implemented": 37409,
         "total": 1821
