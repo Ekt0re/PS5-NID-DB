@@ -65,16 +65,16 @@
   },
   {
     "date": "2026-11-25",
-    "generated_at": "2026-11-25T16:05:08Z",
+    "generated_at": "2026-11-25T21:51:28Z",
     "sha": {
-      "anyps5": "6b59b8f5e76c8c0a431df66e981097998b3754e3",
+      "anyps5": "63b2e14408f974b17f3a06d9b2c3667b0a60f51a",
       "kyty": "93cce66564bdced2fc7054ca9794451dfeef4d9d",
       "sharpemu": "d364227d25e2e7b53043b330efdd3fead1a5210b"
     },
     "counts": {
       "anyps5": {
-        "implemented": 15896,
-        "stub": 19158,
+        "implemented": 15903,
+        "stub": 19151,
         "unknown": 4149,
         "not_implemented": 27,
         "total": 39203
