@@ -1,7 +1,7 @@
 {
   "emulators": {
     "anyps5": {
-      "sha": "63b2e14408f974b17f3a06d9b2c3667b0a60f51a",
+      "sha": "341a9eec16b77e91eed63c20688a907251d0e694",
       "path": "/home/runner/work/PS5-NID-DB/PS5-NID-DB/repos/AnyPS5"
     },
     "kyty": {
