@@ -126,5 +126,37 @@
         "total": 1580
       }
     }
+  },
+  {
+    "date": "2026-11-27",
+    "generated_at": "2026-11-27T08:50:02Z",
+    "sha": {
+      "anyps5": "43e3b541e2b56c65c7b01245e61aa00dcc97a178",
+      "kyty": "61db2f8874d4a94fd2908a87cefa973ddc48ef6e",
+      "sharpemu": "40d6eee47e94505b12ce3ef878ce07232dcd4149"
+    },
+    "counts": {
+      "anyps5": {
+        "implemented": 16166,
+        "stub": 18987,
+        "unknown": 4149,
+        "not_implemented": 27,
+        "total": 39302
+      },
+      "kyty": {
+        "implemented": 1804,
+        "stub": 25,
+        "unknown": 0,
+        "not_implemented": 37500,
+        "total": 1829
+      },
+      "sharpemu": {
+        "implemented": 1515,
+        "stub": 41,
+        "unknown": 72,
+        "not_implemented": 37701,
+        "total": 1628
+      }
+    }
   }
 ]
